@@ -2,12 +2,18 @@ import "express-async-errors";
 import router from "./routes/JobRouters.js";
 import express from "express";
 import mongoose from "mongoose";
+import { StatusCodes } from "http-status-codes";
+
+//errorhandler
+import errHandlerMiddleWare from "./middleware/errHandlerMiddleWare.js";
+
 const app = express();
 
 import * as dotnev from "dotenv";
 dotnev.config();
 
 import morgan from "morgan";
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -18,13 +24,10 @@ const port = process.env.PORT || 5100;
 app.use("/api/v1/jobs", router);
 
 app.use("*", (req, res) => {
-  res.status(404).json({ msg: "Not Found" });
+  res.status(StatusCodes.NOT_FOUND).json({ msg: "Not Found" });
 });
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).json({ msg: "Something went Wrong...Server Error" });
-});
+app.use(errHandlerMiddleWare);
 
 try {
   await mongoose.connect(process.env.MONGO_URL);
