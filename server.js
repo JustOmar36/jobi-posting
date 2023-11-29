@@ -1,3 +1,4 @@
+import router from "./routes/JobRouters.js";
 import express from "express";
 const app = express();
 
@@ -10,14 +11,17 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(express.json());
-const port = 5100;
+const port = process.env.PORT || 5100;
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use("/api/v1/jobs", router);
+
+app.use("*", (req, res) => {
+  res.status(404).json({ msg: "Not Found" });
 });
 
-app.post("/", (req, res) => {
-  res.json({ message: "Data Recieved", data: req.body });
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).json({ msg: "Something went Wrong...Server Error" });
 });
 
 app.listen(port, () => {
