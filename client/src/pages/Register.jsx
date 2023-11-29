@@ -23,6 +23,12 @@ const Register = () => {
             defaultValue="Masri"
           />
           <FormRow
+            type="text"
+            name="location"
+            labelText="Location"
+            defaultValue="Minneapolis"
+          />
+          <FormRow
             type="email"
             name="email"
             labelText="Email"

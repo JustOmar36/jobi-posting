@@ -1,5 +1,7 @@
+import "express-async-errors";
 import router from "./routes/JobRouters.js";
 import express from "express";
+import mongoose from "mongoose";
 const app = express();
 
 import * as dotnev from "dotenv";
@@ -24,6 +26,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ msg: "Something went Wrong...Server Error" });
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+try {
+  await mongoose.connect(process.env.MONGO_URL);
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
+} catch (err) {
+  console.log(err);
+  process.exit(1);
+}
