@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 
-export class NotFoundErr extends Error {
+export class NotFoundError extends Error {
   constructor(msg) {
     super(msg);
     this.name = "NotFoundErr";
