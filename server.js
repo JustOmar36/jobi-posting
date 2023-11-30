@@ -1,5 +1,6 @@
 import "express-async-errors";
-import router from "./routes/JobRouters.js";
+import jobRouter from "./routes/JobRouters.js";
+import authRouter from "./routes/authRouter.js";
 import express from "express";
 import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
@@ -21,7 +22,9 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 const port = process.env.PORT || 5100;
 
-app.use("/api/v1/jobs", router);
+app.use("/api/v1/jobs", jobRouter);
+
+app.use("/api/v1/auth", authRouter);
 
 app.use("*", (req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({ msg: "Not Found" });

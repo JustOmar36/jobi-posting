@@ -3,6 +3,7 @@ import { BadRequestError, NotFoundError } from "../errors/customErrors.js";
 import { JOB_STATUS, JOB_TYPE } from "../utils/constants.js";
 import JobModels from "../models/JobModels.js";
 import mongoose from "mongoose";
+import UserModels from "../models/UserModels.js";
 
 const withValidationErrors = (validateValues) => {
   return [
@@ -38,4 +39,29 @@ export const validateIdParams = withValidationErrors([
     const job = await JobModels.findById(value);
     if (!job) throw new NotFoundError(`no job with id : ${value}`);
   }),
+]);
+
+export const validateRegistration = withValidationErrors([
+  body("name").notEmpty().withMessage("name is required"),
+  body("email")
+    .notEmpty()
+    .withMessage("email is required")
+    .isEmail()
+    .withMessage("invalid email format")
+    .custom(async (email) => {
+      const inSystem = await UserModels.findOne({ email });
+      if (inSystem) throw new BadRequestError("Email Already Exists");
+    }),
+  body("password").notEmpty().withMessage("password is required"),
+  body("lastName").notEmpty().withMessage("last name is required"),
+  body("location").notEmpty().withMessage("location is required"),
+]);
+
+export const validateLogin = withValidationErrors([
+  body("email")
+    .notEmpty()
+    .withMessage("email is required")
+    .isEmail()
+    .withMessage("invalid email format"),
+  body("password").notEmpty().withMessage("password is required"),
 ]);
