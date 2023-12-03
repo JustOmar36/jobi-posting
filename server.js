@@ -1,12 +1,18 @@
 import "express-async-errors";
-import jobRouter from "./routes/JobRouters.js";
-import authRouter from "./routes/authRouter.js";
 import express from "express";
-import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import { StatusCodes } from "http-status-codes";
 
-//errorhandler
+//DB
+import mongoose from "mongoose";
+
+//Middleware
 import errHandlerMiddleWare from "./middleware/errHandlerMiddleWare.js";
+import { authenticateUser } from "./middleware/authMiddleWare.js";
+
+//Routers
+import jobRouter from "./routes/JobRouters.js";
+import authRouter from "./routes/authRouter.js";
 
 const app = express();
 
@@ -19,10 +25,11 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(cookieParser());
 app.use(express.json());
 const port = process.env.PORT || 5100;
 
-app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/jobs", authenticateUser, jobRouter);
 
 app.use("/api/v1/auth", authRouter);
 
