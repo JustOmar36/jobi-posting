@@ -17,8 +17,10 @@ import { authenticateUser } from "./middleware/authMiddleWare.js";
 import jobRouter from "./routes/JobRouters.js";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/authUser.js";
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
+app.use(express.static(path.resolve(__dirname, "./public")));
 
 import * as dotnev from "dotenv";
 dotnev.config();
@@ -42,6 +44,10 @@ app.use("/api/v1/jobs", authenticateUser, jobRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 
 app.use("/api/v1/auth", authRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./public", "index.html"));
+});
 
 app.use("*", (req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({ msg: "Not Found" });

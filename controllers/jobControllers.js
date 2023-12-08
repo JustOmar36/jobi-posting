@@ -4,8 +4,45 @@ import mongoose from "mongoose";
 import day from "dayjs";
 
 export const getAllJobs = async (req, res) => {
-  const jobs = await JobModels.find({ createdBy: req.user.userId });
-  res.status(StatusCodes.OK).json({ jobs });
+  const { search, jobStatus, jobType, sort } = req.query;
+  const queryObject = { createdBy: req.user.userId };
+
+  if (search) {
+    queryObject.$or = [
+      { position: { $regex: search, $options: "i" } },
+      { company: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  if (jobStatus && jobStatus !== "all") {
+    queryObject.jobStatus = jobStatus;
+  }
+
+  if (jobType && jobType !== "all") {
+    queryObject.jobType = jobType;
+  }
+
+  const sortOptions = {
+    "a-z": "company",
+    "z-a": "-company",
+    newest: "-createdAt",
+    oldest: "createdAt",
+  };
+
+  const SortKey = sortOptions[sort] || sortOptions.newest;
+
+  const currentPage = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (currentPage - 1) * limit;
+
+  const totalJobs = await JobModels.countDocuments(queryObject);
+  const numPages = Math.ceil(totalJobs / limit);
+
+  const jobs = await JobModels.find(queryObject)
+    .sort(SortKey)
+    .skip(skip)
+    .limit(limit);
+  res.status(StatusCodes.OK).json({ totalJobs, numPages, currentPage, jobs });
 };
 
 export const createJob = async (req, res) => {

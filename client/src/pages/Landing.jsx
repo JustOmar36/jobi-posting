@@ -16,10 +16,8 @@ const Landing = () => {
             Job <span>Tracking</span> App
           </h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad maxime
-            neque ducimus sapiente, natus aperiam dolores error, porro quibusdam
-            beatae in unde inventore voluptas molestiae rem asperiores. Atque,
-            iure sint?
+            This is a single page React web application built for the purpose of
+            learning Reactjs
           </p>
           <Link to="/register" className="btn register-link">
             Register

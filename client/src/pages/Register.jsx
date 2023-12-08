@@ -30,31 +30,31 @@ const Register = () => {
             type="text"
             name="name"
             labelText="First Name"
-            defaultValue="Omar"
+            defaultValue=""
           />
           <FormRow
             type="text"
             name="lastName"
             labelText="Last Name"
-            defaultValue="Masri"
+            defaultValue=""
           />
           <FormRow
             type="text"
             name="location"
             labelText="Location"
-            defaultValue="Minneapolis"
+            defaultValue=""
           />
           <FormRow
             type="email"
             name="email"
             labelText="Email"
-            defaultValue="Omar@gmail.com"
+            defaultValue=""
           />
           <FormRow
             type="password"
             name="password"
             labelText="Password"
-            defaultValue="12345678"
+            defaultValue=""
           />
           <button
             type="submit"
