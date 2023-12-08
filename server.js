@@ -14,7 +14,7 @@ import errHandlerMiddleWare from "./middleware/errHandlerMiddleWare.js";
 import { authenticateUser } from "./middleware/authMiddleWare.js";
 
 //Routers
-import jobRouter from "./routes/JobRouters.js";
+import jobRouter from "./routes/jobRouters.js";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/authUser.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
