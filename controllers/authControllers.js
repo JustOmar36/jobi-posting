@@ -33,7 +33,10 @@ export const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json("User Created Successfully");
 };
 
-export const get_users = async (req, res) => {
-  const users = await UserModels.find({});
-  res.status(StatusCodes.OK).json(users);
+export const logout = async (req, res) => {
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: "User Logged Out" });
 };

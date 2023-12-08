@@ -11,9 +11,11 @@ import {
   createJob,
   updateJob,
   deleteJob,
+  showStats,
 } from "../controllers/jobControllers.js";
 
 router.route("/").get(getAllJobs).post(validateJobInput, createJob);
+router.route("/stats").get(showStats);
 router
   .route("/:id")
   .get(validateIdParams, getSingleJob)
