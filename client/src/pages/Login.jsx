@@ -42,6 +42,9 @@ const Login = () => {
             Register
           </Link>
         </p>
+        <p>
+          Admin View - Email: admin@mail.com, Password: admin
+        </p>
       </Form>
     </Wrapper>
   );
